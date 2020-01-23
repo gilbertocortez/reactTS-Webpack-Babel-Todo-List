@@ -3,9 +3,6 @@ import { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-interface IFTodo {
-  todo: object; index: number; completeTodo:boolean;removeTodo:boolean;
-}
 
 function Todo({ todo, index, completeTodo, removeTodo }) {
   return (
