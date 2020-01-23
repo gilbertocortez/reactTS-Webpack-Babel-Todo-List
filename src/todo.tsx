@@ -2,30 +2,45 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './Todo.css';
 
-const ViewTodo = ({todo, index}: { todo: string; index: number;}) => { 
+interface todosInterface {
+    todo: string,
+    completed: boolean
+}
+
+const ViewTodo = ({todo, index, completeTodo, removeTodo}: 
+    { todo: todosInterface; index: number; completeTodo:any; removeTodo:any}) => { 
     return(
         <div className="todo">
-            <p className="todoItem">
-                {todo} |
-                <button> X </button> 
-                <button> Completed </button>
+            <p className="todoItem" style={{ textDecoration: todo.completed ? "line-through" : "" }}>
+                {todo.todo}
+                <button onClick={() => removeTodo(index)}>x</button>
+                <button onClick={() => completeTodo(index)}>Complete</button>
             </p>
         </div>
     );
 }
 
 const ToDoApp: React.FC = () => {
-    interface todosInterface {
-        todo: string
-    }
     const [todos, setTodos] = useState<todosInterface>([]);
     const [inputTodo, setInputTodo] = useState('');
 
     const addToDo = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        const newTodos = [ ...todos, {todo: inputTodo} ];
+        const newTodos = [ ...todos, {todo: inputTodo, completed: false} ];
         setTodos( newTodos );
     }
+
+    const removeTodo = (index:number) => {
+        const newTodos = [...todos];
+        newTodos.splice(index, 1);
+        setTodos(newTodos);
+    };
+    
+    const completeTodo = (index:number) => {
+        const newTodos = [...todos];
+        newTodos[index].completed = true;
+        setTodos(newTodos);
+    };
 
     return (
         <div>
@@ -36,7 +51,14 @@ const ToDoApp: React.FC = () => {
                     <button onClick={addToDo}>Add to do</button>
                 </label>
             </form>
-            <div>{todos.map( (todo: todosInterface, index:number) => <ViewTodo todo={todo.todo} index={index}/>)}</div>
+            <div>{todos.map( 
+                (todo: todosInterface, index:number) => 
+                    <ViewTodo 
+                        todo={todo} 
+                        index={index}
+                        completeTodo={completeTodo}
+                        removeTodo={removeTodo}
+                    />)}</div>
         </div>
     );
 }
