@@ -1,12 +1,18 @@
 import React from 'react';
 
-const ViewTodo = ({todo, index}: { todo: string; index: number;}) => { 
+interface todosInterface {
+    todo: string,
+    completed: boolean
+}
+
+const ViewTodo = ({todo, index, completeTodo, removeTodo}: 
+    { todo: todosInterface; index: number; completeTodo:any; removeTodo:any}) => { 
     return(
         <div className="todo">
-            <p className="todoItem">
-                {todo} |
-                <button> X </button> 
-                <button> Completed </button>
+            <p className="todoItem" style={{ textDecoration: todo.completed ? "line-through" : "" }}>
+                {todo.todo}
+                <button onClick={() => removeTodo(index)}>x</button>
+                <button onClick={() => completeTodo(index)}>Complete</button>
             </p>
         </div>
     );

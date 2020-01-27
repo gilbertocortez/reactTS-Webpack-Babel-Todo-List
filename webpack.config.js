@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: './src/todo.tsx',
+  entry: './src/index.tsx',
   mode: "development", // "production" | "development" | "none"
   devtool: "inline-source-map",
   resolve: {
