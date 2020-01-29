@@ -10,6 +10,9 @@ interface listInterface {
 const App: React.FC = () => {
     const [lists, setLists] = useState<listInterface>([]);
     const [inputListName, setInputListName] = useState('');
+    
+    // Work on deleting lists, can get current from 
+    //console.log(JSON.stringify(localStorage));
 
     const addList = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
@@ -44,14 +47,16 @@ const App: React.FC = () => {
                     lists.map( (list: listInterface, index:number) => 
                         (<button onClick={() => loadList(index)}>{list.listName}</button>)
                     )
-                }
-                {
-                    lists.map( (list: listInterface, index:number) => {
-                        if (list.display == true) {
-                            return <ToDoApp list={list} /> 
-                            console.log("List " + list.listName + " ordered");
+                } {
+                    lists.reduce(
+                        (filteredLists: Array<JSX.Element>, list: listInterface) => {
+                            if (list.display) {
+                                filteredLists.push(<ToDoApp list={list} />);
+                            }
+                            return filteredLists
                         }
-                    })
+                        , []
+                    )
                 }
             </div>
         </div>
